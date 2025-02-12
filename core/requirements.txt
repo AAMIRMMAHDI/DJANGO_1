@@ -120,6 +120,7 @@ magic-filter==1.0.12
 marisa-trie==1.2.0
 Markdown==3.6
 markdown-it-py==3.0.0
+Kivy==2.2.1  
 MarkupSafe==2.1.5
 matplotlib==3.9.2
 mccabe==0.7.0
