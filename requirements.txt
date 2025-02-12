@@ -12,7 +12,7 @@ Kivy==2.3.1
 Kivy-Garden==0.1.5
 # kivy-deps.angle==0.4.0
 # kivy-deps.glew==0.3.1
-kivy_deps.sdl2==0.8.0
+#kivy_deps.sdl2==0.8.0
 pillow==10.4.0
 Pygments==2.19.1
 pypiwin32==223
