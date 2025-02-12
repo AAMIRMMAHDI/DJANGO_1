@@ -19,3 +19,4 @@ class ContactAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 admin.site.register(Contact, ContactAdmin)
+ 
