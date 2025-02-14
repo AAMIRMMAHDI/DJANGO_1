@@ -6,6 +6,7 @@ from django.contrib import messages
 from .forms import SignUpForm, ContactForm 
 from .models import Contact, About, Resume, Service, UserProfile  
 import random
+from .models import Contact
 
 def home(request):
     return render(request, "root/index.html")
