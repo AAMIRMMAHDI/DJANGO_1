@@ -1,39 +1,36 @@
-from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import SignUpForm, ContactForm 
-from .models import Contact, About, Resume, Service, UserProfile  
+from .forms import SignUpForm, ContactForm, ProfileIconForm
+from .models import Contact, About, Resume, Service, UserProfile
 import random
-from .models import Contact
 
 def home(request):
     return render(request, "root/index.html")
 
 def about(request):
     abouts = About.objects.filter(status=True)
-    return render(request, "root/about.html", context={"abouts": abouts})
+    return render(request, "root/about.html", {"abouts": abouts})
 
 def resume(request):
     resumes = Resume.objects.filter(status=True)
-    return render(request, "root/resume.html", context={"resumes": resumes})
-
-from django.shortcuts import render
-from .models import Service
+    return render(request, "root/resume.html", {"resumes": resumes})
 
 def services(request):
     query = request.GET.get('q')  
-    if query:
-        services = Service.objects.filter(name__icontains=query) 
-    else:
-        services = Service.objects.all()  
+    services = Service.objects.filter(name__icontains=query) if query else Service.objects.all()
     return render(request, 'root/services.html', {'services': services})
 
 def service_details(request):
     services = Service.objects.all()
-    return render(request, "new Page/service_details.html", context={"services": services})
+    return render(request, "new_Page/service_details.html", {"services": services})
 
+def change(request):
+    resumes = Resume.objects.filter(status=True)
+    return render(request, "new_Page/Change.html", {"resumes": resumes})
 
 def contact_view(request):
     if request.method == 'POST':
@@ -46,11 +43,7 @@ def contact_view(request):
         form = ContactForm()
 
     approved_contacts = Contact.objects.filter(is_approved=True)
-
-    return render(request, 'root/contact.html', {
-        'form': form,
-        'approved_contacts': approved_contacts
-    })
+    return render(request, 'root/contact.html', {'form': form, 'approved_contacts': approved_contacts})
 
 def signup(request):
     if request.method == 'POST':
@@ -70,9 +63,7 @@ def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
                 return redirect('root:home')
@@ -86,13 +77,6 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'You have successfully logged out.')
     return redirect('root:home')
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
-from django.contrib.auth.models import User
-from django.contrib import messages
-from .models import UserProfile
-import random
 
 def generate_reset_code():
     return str(random.randint(1000, 9999))
@@ -103,13 +87,9 @@ def password_reset_request(request):
         try:
             user = User.objects.get(email=email)
             reset_code = generate_reset_code()
-            
-            # ذخیره کد ریست برای کاربر
-            user_profile, created = UserProfile.objects.get_or_create(user=user)
+            user_profile, _ = UserProfile.objects.get_or_create(user=user)
             user_profile.reset_code = reset_code
             user_profile.save()
-            
-            # نمایش کد به کنسول برای تست
             print(f"Recovery code: {reset_code}")
             return redirect('root:password_reset_code')
         except User.DoesNotExist:
@@ -121,7 +101,7 @@ def password_reset_code(request):
         code = request.POST.get('code')
         try:
             user_profile = UserProfile.objects.get(reset_code=code)
-            request.session['user_id'] = user_profile.user.id  # ذخیره شناسه کاربر
+            request.session['user_id'] = user_profile.user.id
             return redirect('root:password_change')
         except UserProfile.DoesNotExist:
             messages.error(request, 'The entered code is incorrect.')
@@ -143,3 +123,14 @@ def password_change(request):
     else:
         messages.error(request, 'Please enter your recovery code first.')
         return redirect('account:password_reset_request')
+
+def change_profile_icon(request):
+    user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
+    if request.method == "POST":
+        form = ProfileIconForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('root:Change')
+    else:
+        form = ProfileIconForm(instance=user_profile)
+    return render(request, 'new_Page/change_icon.html', {'form': form})

@@ -45,7 +45,7 @@
       <a href="{% url 'root:home' %}" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="{% static 'assets/img/logo.png' %}" alt=""> -->
-        <h1 class="sitename">Personal</h1>
+        <h1 class="sitename">AMIR</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -56,12 +56,34 @@
           <li><a href={% url 'root:services' %}>Services</a></li>
           <li><a href={% url 'root:contact' %}>Contact</a></li>
 
+          
           {% if user.is_authenticated %}
             <!-- If user is logged in, show username and logout button -->
-            <li class="nav-item">
-             ( welcome to ، {{ user.username }} )
-            </li>
-            <li>
+            <a href="{% url 'root:Change' %}" class="nav-link text-center">
+              <img src="{% if user.userprofile.image %}{{ user.userprofile.image.url }}{% else %}/media/profile_pics/default.jpg{% endif %}" 
+                   alt="Profile Icon" class="profile-icon">
+                   <span>( welcome to، {{ user.username }} )</span>
+          </a>
+          
+          <style>
+              .profile-icon {
+                  width: 50px; /* تنظیم اندازه آیکون */
+                  height: 50px;
+                  border-radius: 50%; /* تبدیل به دایره */
+                  object-fit: cover; /* برش منظم تصویر */
+                  border: 2px solid #fff; /* حاشیه دور تصویر */
+                  display: block; /* وسط‌چین شدن تصویر */
+                  margin: 0 auto;
+              }
+              .nav-link {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  text-decoration: none;
+                  color: black;
+              }
+          </style>
+          <span class="separator">ㅤ</span>
               <a href="{% url 'root:logout' %}" class="btn btn-secondary">logout</a>
             </li>
           {% else %}
@@ -113,6 +135,7 @@
   <!-- Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
 
+  
 </body>
 
 </html>

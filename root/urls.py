@@ -18,5 +18,7 @@ urlpatterns = [
     path('password_change/', password_change, name='password_change'),
     path('', include('django.contrib.auth.urls')),
     path('captcha/', include('captcha.urls')),
+    path('Change/', change , name='Change'),
+    path('change-icon/', change_profile_icon, name='change_profile_icon'),
 
 ]

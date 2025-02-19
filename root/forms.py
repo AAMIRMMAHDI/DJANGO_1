@@ -48,3 +48,14 @@ class CustomPasswordResetForm(PasswordResetForm):
         print(f"Subject: {self.get_subject(subject_template_name, context)}")
         print(f"Email to: {to_email}")
         print(f"Message: {self.get_email_body(email_template_name, context)}")
+
+
+
+
+from django import forms
+from .models import UserProfile
+
+class ProfileIconForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['image']

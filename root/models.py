@@ -84,11 +84,12 @@ class Contact(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-    reset_code = models.CharField(max_length=6, null=True, blank=True)  # این خط باید اضافه شود
-
+    image = models.ImageField(upload_to='profile_pics/', null=True, blank=True, default='profile_pics/11.jpg')
+    reset_code = models.CharField(max_length=6, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
+
+
 
 

@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
+    <title>Change Profile Icon</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,13 +26,13 @@
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
             width: 100%;
             max-width: 400px;
+            text-align: center;
         }
         .form-container h2 {
             color: white;
-            text-align: center;
             margin-bottom: 20px;
         }
-        .form-container input {
+        .form-container input[type="file"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -42,9 +42,6 @@
             border-radius: 40px;
             font-size: 16px;
             backdrop-filter: blur(5px);
-        }
-        .form-container input::placeholder {
-            color: #bbb;
         }
         .form-container button {
             width: 100%;
@@ -61,7 +58,6 @@
         }
         .form-container a {
             display: block;
-            text-align: center;
             margin-top: 15px;
             color: white;
             text-decoration: underline;
@@ -71,19 +67,13 @@
 <body>
 
 <div class="form-container">
-    <h2>Login</h2>
-    <form method="POST">
+    <h2>Change Profile Icon</h2>
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.username }} 
-        {{ form.password }}
-
-        <button type="submit">Login</button>
-
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
     </form>
-
-    <!-- لینک ریست پسورد -->
-    <a href="{% url 'root:password_reset_request' %}">Forgot Password?</a>
-
+    <a href="{% url 'root:Change' %}">Back to Settings</a>
 </div>
 
 </body>
