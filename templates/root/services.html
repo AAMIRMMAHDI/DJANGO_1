@@ -56,11 +56,13 @@
           <li><a href={% url 'root:services' %}>Services</a></li>
           <li><a href={% url 'root:contact' %}>Contact</a></li>
 
+          
           {% if user.is_authenticated %}
             <!-- If user is logged in, show username and logout button -->
             <a href="{% url 'root:Change' %}" class="nav-link text-center">
               <img src="{% if user.userprofile.image %}{{ user.userprofile.image.url }}{% else %}/media/profile_pics/default.jpg{% endif %}" 
                    alt="Profile Icon" class="profile-icon">
+                   <span>( welcome to، {{ user.username }} )</span>
           </a>
           
           <style>
@@ -100,6 +102,7 @@
 
     </div>
   </header>
+
   <main class="main">
     <!-- Page Title -->
     <div class="page-title" data-aos="fade">
@@ -182,31 +185,11 @@
     <section id="service-details" class="service-details section" style="display: none;">
       <div class="container">
         <div class="row gy-4">
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="services-list">
-              {% if services %}
-                {% for service in services %}
-                  <a href="javascript:void(0);" onclick="showServiceDetails(
-                    '{{ service.name }}',
-                    '{{ service.content }}',
-                    '{{ service.image.url }}',
-                    '{{ service.about_content }}',
-                    '{{ service.Edelectus_content_name }}',
-                    '{{ service.Edelectus_content_Description }}',
-                    '{{ service.Temporibus_content_name }}',
-                    '{{ service.Temporibus_content_Description }}',
-                    '{{ service.Feature_content }}',
-                    '{{ service.Description_content_name }}',
-                    '{{ service.Description_content_Description }}'
-                  )">{{ service.name }}</a>
-                {% endfor %}
-              {% endif %}
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 id="service-title">Service Title</h4>
             </div>
-            <h4 id="service-title">Service Title</h4>
             <p id="service-description">Service description will be displayed here.</p>
-          </div>
-          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-            <img id="service-image" src="{% static 'assets/img/services.jpg' %}" alt="" class="img-fluid services-img">
             <h3 id="service-heading">Service Heading</h3>
             <p id="service-content">Service content will be displayed here.</p>
             <ul id="service-features">
@@ -217,9 +200,15 @@
             <p id="service-additional-info">
               Additional information about the service will be displayed here.
             </p>
+            <br><br>
+            <a href="javascript:void(0);" onclick="hideServiceDetails()" class="btn btn-secondary">Back to Services</a>
+          </div>
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <img id="service-image" src="{% static 'assets/img/services.jpg' %}" alt="" class="img-fluid services-img">
           </div>
         </div>
       </div>
+      
     </section><!-- /Service Details Section -->
   </main>
 
@@ -303,6 +292,14 @@
 
       // Update Additional Info
       document.getElementById('service-additional-info').innerText = descriptionDescription;
+    }
+
+    function hideServiceDetails() {
+      // Hide Service Details Section
+      document.getElementById('service-details').style.display = 'none';
+
+      // Show Services Section
+      document.getElementById('services').style.display = 'block';
     }
   </script>
 </body>
