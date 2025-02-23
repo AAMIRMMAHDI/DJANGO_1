@@ -1,13 +1,31 @@
-{% extends "base.html" %}
 {% load static %}
-{% block title %}{% endblock title %}
-{% block 'content' %}
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings</title>
+    <!-- استایل‌های هدر -->
+    <style>
+        /* استایل‌های هدر */
+        .header .profile-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            display: block;
+            margin: 0 auto;
+        }
+        .header .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+    <!-- استایل‌های صفحه تنظیمات -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,29 +43,137 @@
             border-radius: 20px;
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
             width: 100%;
-            max-width: 400px;
+            max-width: 600px;
+            display: flex;
+            align-items: flex-start;
+            gap: 30px;
+        }
+        .profile-section {
             text-align: center;
         }
-        .form-container a {
-            display: block;
-            margin: 15px 0;
+        .profile-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            margin-bottom: 20px;
+        }
+        .info-section {
+            flex: 1;
             color: white;
-            text-decoration: underline;
+        }
+        .info-section h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .info-section label {
+            display: block;
+            margin: 10px 0 5px;
             font-size: 18px;
         }
-        .form-container a:hover {
+        .info-section input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: white;
+        }
+        .password-container {
+            position: relative;
+        }
+        .password-container input[readonly] {
+            background-color: #444;
+            cursor: not-allowed;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #ccc;
+        }
+        .toggle-password:hover {
             color: #007bff;
+        }
+        .change-password-link {
+            display: block;
+            margin: 10px 0;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .change-password-link:hover {
+            text-decoration: underline;
+        }
+        .save-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .save-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <a href="{% url 'root:password_reset_request' %}">Reset Password</a>
-    <br>
-    <a href="{% url 'root:change_profile_icon' %}">Change Icon</a>
-</div>
+    <div class="form-container">
+        <!-- بخش تصویر پروفایل -->
+        <div class="profile-section">
+            <a href="{% url 'root:change_profile_icon' %}">
+                <img src="{% if user.userprofile.image %}{{ user.userprofile.image.url }}{% else %}/media/profile_pics/default.jpg{% endif %}" 
+                     alt="Profile Icon" class="profile-icon">
+            </a>
+        </div>
 
+        <!-- بخش اطلاعات کاربری -->
+        <div class="info-section">
+            <h2>Account Information</h2>
+            <form method="post" action="{% url 'root:save_profile_changes' %}">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ user.username|default:'***' }}">
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email|default:'***' }}">
+
+                <label for="first_name">Name:</label>
+                <input type="text" id="first_name" name="first_name" value="{{ user.first_name|default:'***' }}">
+
+                <label for="password">Password:</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" value="********" readonly>
+                    <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+                </div>
+
+                <a href="{% url 'root:password_reset_request' %}" class="change-password-link">Change Password</a>
+
+                <button type="submit" class="save-button">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '👁️';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+    </script>
 </body>
 </html>
-{% endblock 'content' %}

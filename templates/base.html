@@ -62,7 +62,7 @@
             <a href="{% url 'root:Change' %}" class="nav-link text-center">
               <img src="{% if user.userprofile.image %}{{ user.userprofile.image.url }}{% else %}/media/profile_pics/default.jpg{% endif %}" 
                    alt="Profile Icon" class="profile-icon">
-                   <span>( welcome to، {{ user.username }} )</span>
+                   <span>( welcome to، {{ user.first_name}} )</span>
           </a>
           
           <style>

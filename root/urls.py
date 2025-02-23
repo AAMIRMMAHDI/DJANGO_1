@@ -1,4 +1,4 @@
-from django.urls import *
+from django.urls import path, include
 from .views import *
 
 app_name = 'root' 
@@ -16,9 +16,8 @@ urlpatterns = [
     path('password_reset/', password_reset_request, name='password_reset_request'),
     path('password_reset_code/', password_reset_code, name='password_reset_code'),
     path('password_change/', password_change, name='password_change'),
-    path('', include('django.contrib.auth.urls')),
     path('captcha/', include('captcha.urls')),
-    path('Change/', change , name='Change'),
+    path('Change/', change, name='Change'),
     path('change-icon/', change_profile_icon, name='change_profile_icon'),
-
+    path('save_profile_changes/', save_profile_changes, name='save_profile_changes'),  
 ]

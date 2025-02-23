@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -28,9 +28,9 @@ def service_details(request):
     services = Service.objects.all()
     return render(request, "new_Page/service_details.html", {"services": services})
 
+@login_required
 def change(request):
-    resumes = Resume.objects.filter(status=True)
-    return render(request, "new_Page/Change.html", {"resumes": resumes})
+    return render(request, "new_Page/Change.html")
 
 def contact_view(request):
     if request.method == 'POST':
@@ -124,6 +124,7 @@ def password_change(request):
         messages.error(request, 'Please enter your recovery code first.')
         return redirect('account:password_reset_request')
 
+@login_required
 def change_profile_icon(request):
     user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
     if request.method == "POST":
@@ -134,3 +135,25 @@ def change_profile_icon(request):
     else:
         form = ProfileIconForm(instance=user_profile)
     return render(request, 'new_Page/change_icon.html', {'form': form})
+@login_required
+def save_profile_changes(request):
+    if request.method == 'POST':
+        user = request.user
+        # دریافت داده‌ها از فرم
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+
+        # اعمال تغییرات به مدل کاربر
+        if username:
+            user.username = username
+        if email:
+            user.email = email
+        if first_name:
+            user.first_name = first_name
+
+        user.save()
+        messages.success(request, 'تغییرات با موفقیت ذخیره شدند.')
+        return redirect('root:home')  # بازگشت به صفحه اصلی
+
+    return redirect('root:Change')
