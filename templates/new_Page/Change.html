@@ -125,17 +125,13 @@
     </style>
 </head>
 <body>
-
     <div class="form-container">
-        <!-- بخش تصویر پروفایل -->
         <div class="profile-section">
             <a href="{% url 'root:change_profile_icon' %}">
                 <img src="{% if user.userprofile.image %}{{ user.userprofile.image.url }}{% else %}/media/profile_pics/default.jpg{% endif %}" 
                      alt="Profile Icon" class="profile-icon">
             </a>
         </div>
-
-        <!-- بخش اطلاعات کاربری -->
         <div class="info-section">
             <h2>Account Information</h2>
             <form method="post" action="{% url 'root:save_profile_changes' %}">
