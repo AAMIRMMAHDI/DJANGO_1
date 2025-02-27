@@ -60,9 +60,8 @@ class ProfileIconForm(forms.ModelForm):
         model = UserProfile
         fields = ['image']
 
-
-
-
+from django import forms
+from .models import ServiceComment
 
 from django import forms
 from .models import ServiceComment
@@ -76,13 +75,10 @@ class ServiceCommentForm(forms.ModelForm):
         }
 
 
-
-
-
-from django import forms
-from .models import Comment
-
-class CommentForm(forms.ModelForm):
+class EditCommentForm(forms.ModelForm):
     class Meta:
-        model = Comment
-        fields = ["text"]
+        model = ServiceComment
+        fields = ['comment']
+        widgets = {
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your comment...'}),
+        }
