@@ -19,14 +19,14 @@ def resume(request):
     resumes = Resume.objects.filter(status=True)
     return render(request, "root/resume.html", {"resumes": resumes})
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Service, ServiceComment
+from .forms import ServiceCommentForm
+
 def services(request):
     query = request.GET.get('q')  
     services = Service.objects.filter(name__icontains=query) if query else Service.objects.all()
     return render(request, 'root/services.html', {'services': services})
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Service, ServiceComment
-from .forms import ServiceCommentForm
 
 def service_details(request, service_id):
     service = get_object_or_404(Service, id=service_id)
@@ -43,11 +43,63 @@ def service_details(request, service_id):
     else:
         form = ServiceCommentForm()
     
-    return render(request, 'new_Page/service_details.html', {
+    return render(request, 'root/services.html', {
         'service': service,
         'comments': comments,
         'form': form,
     })
+
+
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from .models import Comment
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user == comment.user:
+        comment.delete()
+        return redirect("home")  # تغییر بده به صفحه مورد نظر
+    else:
+        return HttpResponseForbidden("شما اجازه حذف این کامنت را ندارید.")
+
+
+
+
+
+
+from django.shortcuts import render
+from django.http import HttpResponseForbidden
+from .models import Comment
+from .forms import CommentForm
+
+@login_required
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user != comment.user:
+        return HttpResponseForbidden("شما اجازه ویرایش این کامنت را ندارید.")
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect("home")  # تغییر بده به صفحه مورد نظر
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, "edit_comment.html", {"form": form})
+
+
+
+
+
+
+
+
 
 @login_required
 def change(request):

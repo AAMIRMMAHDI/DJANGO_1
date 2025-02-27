@@ -7,7 +7,6 @@ urlpatterns = [
     path('', home, name='home'),
     path('about/', about, name='about'),
     path('resume/', resume, name='resume'),
-    path('services/', services, name='services'),
     path('service_details/', service_details, name='service_details'),
     path('contact/', contact_view, name='contact'),  
     path('signup/', signup, name='signup'),
@@ -20,5 +19,6 @@ urlpatterns = [
     path('Change/', change, name='Change'),
     path('change-icon/', change_profile_icon, name='change_profile_icon'),
     path('save_profile_changes/', save_profile_changes, name='save_profile_changes'),  
+    path('services/', services, name='services'),
     path('service_details/<int:service_id>/', service_details, name='service_details'),
 ]

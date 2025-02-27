@@ -153,19 +153,7 @@
                       <i class="bi bi-activity"></i>
                     {% endif %}
                   </div>
-                  <a href="javascript:void(0);" onclick="showServiceDetails(
-                    '{{ service.name }}',
-                    '{{ service.content }}',
-                    '{{ service.image.url }}',
-                    '{{ service.about_content }}',
-                    '{{ service.Edelectus_content_name }}',
-                    '{{ service.Edelectus_content_Description }}',
-                    '{{ service.Temporibus_content_name }}',
-                    '{{ service.Temporibus_content_Description }}',
-                    '{{ service.Feature_content }}',
-                    '{{ service.Description_content_name }}',
-                    '{{ service.Description_content_Description }}'
-                  )" class="stretched-link">
+                  <a href="{% url 'root:service_details' service.id %}" class="stretched-link">
                     <h3>{{ service.name }}</h3>
                   </a>
                   <p>{{ service.content|truncatewords:20 }}</p>
@@ -181,35 +169,60 @@
       </div>
     </section><!-- /Services Section -->
 
-    <!-- Service Details Section (Hidden by Default) -->
-    <section id="service-details" class="service-details section" style="display: none;">
+    <!-- Service Details Section -->
+    {% if service %}
+    <section id="service-details" class="service-details section">
       <div class="container">
         <div class="row gy-4">
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <h4 id="service-title">Service Title</h4>
+              <h4 id="service-title">{{ service.name }}</h4>
             </div>
-            <p id="service-description">Service description will be displayed here.</p>
-            <h3 id="service-heading">Service Heading</h3>
-            <p id="service-content">Service content will be displayed here.</p>
+            <p id="service-description">{{ service.about_content }}</p>
+            <h3 id="service-heading">{{ service.name }}</h3>
+            <p id="service-content">{{ service.content }}</p>
             <ul id="service-features">
-              <li><i class="bi bi-check-circle"></i> <span>Feature 1</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Feature 2</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Feature 3</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>{{ service.Edelectus_content_name }}</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>{{ service.Temporibus_content_name }}</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>{{ service.Feature_content }}</span></li>
             </ul>
             <p id="service-additional-info">
-              Additional information about the service will be displayed here.
+              {{ service.Description_content_Description }}
             </p>
-            <br>
-            <a href="javascript:void(0);" onclick="hideServiceDetails()" class="btn btn-secondary">Back to Services</a>
-
+            <br><br>
+            <a href="{% url 'root:services' %}" class="btn btn-secondary">Back to Services</a>
           </div>
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-            <img id="service-image" src="{% static 'assets/img/services.jpg' %}" alt="" class="img-fluid services-img">
+            <img id="service-image" src="{{ service.image.url }}" alt="" class="img-fluid services-img">
+          </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="row mt-5">
+          <div class="col-lg-12">
+            <h4>Comments</h4>
+            {% if request.user.is_authenticated %}
+              <form method="post" action="{% url 'root:service_details' service.id %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit Comment</button>
+              </form>
+            {% else %}
+              <p>Please <a href="{% url 'root:login' %}">login</a> to leave a comment.</p>
+            {% endif %}
+            <hr>
+            {% for comment in comments %}
+              <div class="comment mb-3">
+                <strong>{{ comment.user.username }}</strong>
+                <p>{{ comment.comment }}</p>
+                <small>{{ comment.created_at }}</small>
+              </div>
+            {% endfor %}
           </div>
         </div>
       </div>
     </section><!-- /Service Details Section -->
+    {% endif %}
   </main>
 
   <!-- Footer -->
@@ -250,57 +263,6 @@
 
   <!-- Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
-
-  <!-- Custom JS for Service Details -->
-  <script>
-    function showServiceDetails(
-      name,
-      content,
-      imageUrl,
-      aboutContent,
-      edelectusName,
-      edelectusDescription,
-      temporibusName,
-      temporibusDescription,
-      featureContent,
-      descriptionName,
-      descriptionDescription
-    ) {
-      // Hide Services Section
-      document.getElementById('services').style.display = 'none';
-
-      // Show Service Details Section
-      document.getElementById('service-details').style.display = 'block';
-
-      // Update Service Details Content
-      document.getElementById('service-title').innerText = name;
-      document.getElementById('service-description').innerText = aboutContent;
-      document.getElementById('service-heading').innerText = name;
-      document.getElementById('service-content').innerText = content;
-      document.getElementById('service-image').src = imageUrl;
-
-      // Update Features
-      const features = [
-        edelectusName,
-        temporibusName,
-        featureContent
-      ];
-      const featuresList = document.getElementById('service-features');
-      featuresList.innerHTML = features.map(feature => `
-        <li><i class="bi bi-check-circle"></i> <span>${feature}</span></li>
-      `).join('');
-
-      // Update Additional Info
-      document.getElementById('service-additional-info').innerText = descriptionDescription;
-    }
-
-    function hideServiceDetails() {
-      // Hide Service Details Section
-      document.getElementById('service-details').style.display = 'none';
-
-      // Show Services Section
-      document.getElementById('services').style.display = 'block';
-    }
-  </script>
 </body>
+
 </html>

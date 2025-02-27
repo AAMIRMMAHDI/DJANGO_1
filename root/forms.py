@@ -74,3 +74,15 @@ class ServiceCommentForm(forms.ModelForm):
         widgets = {
             'comment': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Your comment...'}),
         }
+
+
+
+
+
+from django import forms
+from .models import Comment
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["text"]
