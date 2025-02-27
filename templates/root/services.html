@@ -62,7 +62,7 @@
             <a href="{% url 'root:Change' %}" class="nav-link text-center">
               <img src="{% if user.userprofile.image %}{{ user.userprofile.image.url }}{% else %}/media/profile_pics/default.jpg{% endif %}" 
                    alt="Profile Icon" class="profile-icon">
-                   <span>( welcome to، {{ user.username }} )</span>
+                   <span>( welcome to، {{ user.first_name}} )</span>
           </a>
           
           <style>
@@ -156,7 +156,7 @@
                   <a href="javascript:void(0);" onclick="showServiceDetails(
                     '{{ service.name }}',
                     '{{ service.content }}',
-                    '{{ service.image.url }}', 
+                    '{{ service.image.url }}',
                     '{{ service.about_content }}',
                     '{{ service.Edelectus_content_name }}',
                     '{{ service.Edelectus_content_Description }}',
@@ -200,15 +200,15 @@
             <p id="service-additional-info">
               Additional information about the service will be displayed here.
             </p>
-            <br><br>
+            <br>
             <a href="javascript:void(0);" onclick="hideServiceDetails()" class="btn btn-secondary">Back to Services</a>
+
           </div>
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
             <img id="service-image" src="{% static 'assets/img/services.jpg' %}" alt="" class="img-fluid services-img">
           </div>
         </div>
       </div>
-      
     </section><!-- /Service Details Section -->
   </main>
 

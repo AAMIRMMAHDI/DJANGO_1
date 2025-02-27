@@ -24,9 +24,30 @@ def services(request):
     services = Service.objects.filter(name__icontains=query) if query else Service.objects.all()
     return render(request, 'root/services.html', {'services': services})
 
-def service_details(request):
-    services = Service.objects.all()
-    return render(request, "new_Page/service_details.html", {"services": services})
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Service, ServiceComment
+from .forms import ServiceCommentForm
+
+def service_details(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+    comments = ServiceComment.objects.filter(service=service)
+    
+    if request.method == 'POST' and request.user.is_authenticated:
+        form = ServiceCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.service = service
+            comment.user = request.user
+            comment.save()
+            return redirect('root:service_details', service_id=service.id)
+    else:
+        form = ServiceCommentForm()
+    
+    return render(request, 'new_Page/service_details.html', {
+        'service': service,
+        'comments': comments,
+        'form': form,
+    })
 
 @login_required
 def change(request):

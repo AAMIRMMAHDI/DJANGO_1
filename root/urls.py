@@ -20,4 +20,5 @@ urlpatterns = [
     path('Change/', change, name='Change'),
     path('change-icon/', change_profile_icon, name='change_profile_icon'),
     path('save_profile_changes/', save_profile_changes, name='save_profile_changes'),  
+    path('service_details/<int:service_id>/', service_details, name='service_details'),
 ]
