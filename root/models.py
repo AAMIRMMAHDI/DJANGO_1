@@ -12,7 +12,7 @@ class Service(models.Model):
     content = models.TextField(default="test")
     name_servise = models.CharField(max_length=100, default="Default Service")  
     about_content = models.TextField(default="test")
-    image = models.ImageField(upload_to='services', default='services/default.jpg')
+    image = models.ImageField(upload_to='services', default='services/default0.jpg')
     Edelectus_content_name = models.TextField(default="test")
     Edelectus_content_Description = models.TextField(default="test")
     Temporibus_content_name = models.TextField(default="test")
@@ -98,7 +98,7 @@ class Contact(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='profile_pics/', null=True, blank=True, default='profile_pics/11.jpg')
+    image = models.ImageField(upload_to='profile_pics/', null=True, blank=True, default='profile_pics/icon.png')
     reset_code = models.CharField(max_length=6, null=True, blank=True)
 
     def __str__(self):

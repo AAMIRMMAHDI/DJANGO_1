@@ -86,7 +86,7 @@ def change_profile_icon(request):
         if form.is_valid():
             form.save()
             messages.success(request, "آیکون پروفایل شما تغییر کرد.")
-            return redirect('root:change')
+            return redirect('root:Change')
     else:
         form = ProfileIconForm(instance=user_profile)
 
