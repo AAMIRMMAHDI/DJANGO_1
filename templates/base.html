@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Home</title>
+  <title>AMIRMAHDI</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -50,11 +50,11 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href={% url 'root:home' %} class="active">Home</a></li>
-          <li><a href={% url 'root:about' %}>About</a></li>
-          <li><a href={% url 'root:resume' %}>Resume</a></li>
-          <li><a href={% url 'root:services' %}>Services</a></li>
-          <li><a href={% url 'root:contact' %}>Contact</a></li>
+          <li><a href="{% url 'root:home' %}" class="{% if active_page == 'home' %}active{% endif %}">Home</a></li>
+          <li><a href="{% url 'root:about' %}" class="{% if active_page == 'about' %}active{% endif %}">About</a></li>
+          <li><a href="{% url 'root:resume' %}" class="{% if active_page == 'resume' %}active{% endif %}">Resume</a></li>
+          <li><a href="{% url 'root:services' %}" class="{% if active_page == 'services' %}active{% endif %}">Services</a></li>
+          <li><a href="{% url 'root:contact' %}" class="{% if active_page == 'contact' %}active{% endif %}">Contact</a></li>
 
           
           {% if user.is_authenticated %}

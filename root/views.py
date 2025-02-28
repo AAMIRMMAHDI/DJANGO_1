@@ -1,42 +1,47 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Service, ServiceComment
-from .forms import ServiceCommentForm, EditCommentForm  
-from django.shortcuts import render, redirect, get_object_or_404
+from .models import Service, ServiceComment, About, Resume, Contact, UserProfile
+from .forms import ServiceCommentForm, EditCommentForm, SignUpForm, ContactForm, ProfileIconForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import SignUpForm, ContactForm, ProfileIconForm, ServiceCommentForm
-from .models import Contact, About, Resume, Service, ServiceComment, UserProfile
 import random
-
 
 # صفحه اصلی
 def home(request):
-    return render(request, "root/index.html")
-
+    context = {
+        'active_page': 'home'  # شناسه صفحه فعلی
+    }
+    return render(request, "root/index.html", context)
 
 # درباره ما
 def about(request):
     abouts = About.objects.filter(status=True)
-    return render(request, "root/about.html", {"abouts": abouts})
-
+    context = {
+        'active_page': 'about',  # شناسه صفحه فعلی
+        'abouts': abouts
+    }
+    return render(request, "root/about.html", context)
 
 # رزومه
 def resume(request):
     resumes = Resume.objects.filter(status=True)
-    return render(request, "root/resume.html", {"resumes": resumes})
+    context = {
+        'active_page': 'resume',  # شناسه صفحه فعلی
+        'resumes': resumes
+    }
+    return render(request, "root/resume.html", context)
 
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Service, ServiceComment
-from .forms import ServiceCommentForm
-
+# خدمات
 def services(request):
     query = request.GET.get('q')  
     services = Service.objects.filter(name__icontains=query) if query else Service.objects.all()
-    return render(request, 'root/services.html', {'services': services})
+    context = {
+        'active_page': 'services',  # شناسه صفحه فعلی
+        'services': services
+    }
+    return render(request, 'root/services.html', context)
 
 def service_details(request, service_id):
     service = get_object_or_404(Service, id=service_id)
@@ -72,7 +77,7 @@ def service_details(request, service_id):
         'form': form,
     })
 
-# تغییر اطلاعات پروفایل (فقط برای کاربران لاگین شده)
+# تغییر آیکون پروفایل
 @login_required
 def change_profile_icon(request):
     user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
@@ -85,16 +90,21 @@ def change_profile_icon(request):
     else:
         form = ProfileIconForm(instance=user_profile)
 
-    return render(request, 'new_Page/change_icon.html', {'form': form})
-
+    context = {
+        'active_page': 'change',  # شناسه صفحه فعلی
+        'form': form
+    }
+    return render(request, 'new_Page/change_icon.html', context)
 
 # صفحه تغییر اطلاعات کاربری
 @login_required
 def change(request):
-    return render(request, "new_Page/Change.html")
+    context = {
+        'active_page': 'change'  # شناسه صفحه فعلی
+    }
+    return render(request, "new_Page/Change.html", context)
 
-
-# فرم تماس با ما
+# تماس با ما
 def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -106,8 +116,12 @@ def contact_view(request):
         form = ContactForm()
 
     approved_contacts = Contact.objects.filter(is_approved=True)
-    return render(request, 'root/contact.html', {'form': form, 'approved_contacts': approved_contacts})
-
+    context = {
+        'active_page': 'contact',  # شناسه صفحه فعلی
+        'form': form,
+        'approved_contacts': approved_contacts
+    }
+    return render(request, 'root/contact.html', context)
 
 # ثبت‌نام کاربر جدید
 def signup(request):
@@ -123,8 +137,11 @@ def signup(request):
     else:
         form = SignUpForm()
 
-    return render(request, 'account/signup.html', {'form': form})
-
+    context = {
+        'active_page': 'signup',  # شناسه صفحه فعلی
+        'form': form
+    }
+    return render(request, 'account/signup.html', context)
 
 # ورود کاربر
 def login_view(request):
@@ -141,8 +158,11 @@ def login_view(request):
     else:
         form = AuthenticationForm()
 
-    return render(request, 'account/login.html', {'form': form})
-
+    context = {
+        'active_page': 'login',  # شناسه صفحه فعلی
+        'form': form
+    }
+    return render(request, 'account/login.html', context)
 
 # خروج کاربر
 def logout_view(request):
@@ -150,11 +170,9 @@ def logout_view(request):
     messages.success(request, 'با موفقیت خارج شدید.')
     return redirect('root:home')
 
-
 # تولید کد بازیابی رمز عبور
 def generate_reset_code():
     return str(random.randint(1000, 9999))
-
 
 # درخواست بازیابی رمز عبور
 def password_reset_request(request):
@@ -171,8 +189,10 @@ def password_reset_request(request):
         except User.DoesNotExist:
             messages.error(request, 'کاربری با این ایمیل یافت نشد.')
 
-    return render(request, 'account/password_reset_request.html')
-
+    context = {
+        'active_page': 'password_reset_request'  # شناسه صفحه فعلی
+    }
+    return render(request, 'account/password_reset_request.html', context)
 
 # بررسی کد بازیابی رمز عبور
 def password_reset_code(request):
@@ -185,8 +205,10 @@ def password_reset_code(request):
         except UserProfile.DoesNotExist:
             messages.error(request, 'کد وارد شده اشتباه است.')
 
-    return render(request, 'account/password_reset_code.html')
-
+    context = {
+        'active_page': 'password_reset_code'  # شناسه صفحه فعلی
+    }
+    return render(request, 'account/password_reset_code.html', context)
 
 # تغییر رمز عبور
 def password_change(request):
@@ -202,11 +224,14 @@ def password_change(request):
         else:
             form = SetPasswordForm(user)
 
-        return render(request, 'account/password_change.html', {'form': form})
+        context = {
+            'active_page': 'password_change',  # شناسه صفحه فعلی
+            'form': form
+        }
+        return render(request, 'account/password_change.html', context)
 
     messages.error(request, 'ابتدا کد بازیابی را وارد کنید.')
     return redirect('root:password_reset_request')
-
 
 # ذخیره تغییرات اطلاعات کاربری
 @login_required
