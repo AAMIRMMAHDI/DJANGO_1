@@ -8,27 +8,24 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 import random
 
-# صفحه اصلی
 def home(request):
     context = {
-        'active_page': 'home'  # شناسه صفحه فعلی
+        'active_page': 'home'
     }
     return render(request, "root/index.html", context)
 
-# درباره ما
 def about(request):
     abouts = About.objects.filter(status=True)
     context = {
-        'active_page': 'about',  # شناسه صفحه فعلی
+        'active_page': 'about', 
         'abouts': abouts
     }
     return render(request, "root/about.html", context)
 
-# رزومه
 def resume(request):
     resumes = Resume.objects.filter(status=True)
     context = {
-        'active_page': 'resume',  # شناسه صفحه فعلی
+        'active_page': 'resume',
         'resumes': resumes
     }
     return render(request, "root/resume.html", context)
