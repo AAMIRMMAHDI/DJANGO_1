@@ -12,20 +12,16 @@
             {% for about in abouts %}
             <div class="col-lg-8">
               <h1>{{about.PAGE_NAME}}</h1>
+              <div class="container section-title " data-aos="fade-up">
+                <h2></h2>
+            </div>
               <p class="mb-0">{{about.A_LITTLE_ABOUT_US}}</p>
             </div>
             {% endfor %}
           </div>
         </div>
       </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="{% url 'root:home' %}">Home</a></li>
-            <li class="current">About</li>
-          </ol>
-        </div>
-      </nav>
+ 
     </div><!-- End Page Title -->
 
     <!-- About Section -->

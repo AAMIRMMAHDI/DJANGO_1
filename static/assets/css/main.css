@@ -76,7 +76,12 @@ a:hover {
   color: color-mix(in srgb, var(--accent-color), transparent 25%);
   text-decoration: none;
 }
+.container {
+  position: relative;
+  z-index: 3;
 
+  
+}
 h1,
 h2,
 h3,

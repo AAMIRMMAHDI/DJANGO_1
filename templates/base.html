@@ -60,29 +60,10 @@
           {% if user.is_authenticated %}
             <!-- If user is logged in, show username and logout button -->
             <a href="{% url 'root:Change' %}" class="nav-link text-center">
-              <img src="{% if user.userprofile.image %}{{ user.userprofile.image.url }}{% else %}/media/profile_pics/default.jpg{% endif %}" 
-                   alt="Profile Icon" class="profile-icon">
                    <span>( welcome to، {{ user.first_name}} )</span>
           </a>
           
-          <style>
-              .profile-icon {
-                  width: 50px; /* تنظیم اندازه آیکون */
-                  height: 50px;
-                  border-radius: 50%; /* تبدیل به دایره */
-                  object-fit: cover; /* برش منظم تصویر */
-                  border: 2px solid #fff; /* حاشیه دور تصویر */
-                  display: block; /* وسط‌چین شدن تصویر */
-                  margin: 0 auto;
-              }
-              .nav-link {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  text-decoration: none;
-                  color: black;
-              }
-          </style>
+
           <span class="separator">ㅤ</span>
               <a href="{% url 'root:logout' %}" class="btn btn-secondary">logout</a>
             </li>
@@ -107,10 +88,7 @@
 
 {% endblock 'content' %}
 
-  <!-- Footer section -->
-  <footer id="footer" class="footer dark-background">
-    <!-- Add your footer content here -->
-  </footer>
+
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
