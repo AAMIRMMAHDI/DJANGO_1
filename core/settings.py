@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qc&ffu#0$^+2allr1lsu^@h#nldqi8_i&8#ybq#(u%lzn*#qn!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-1-46yo.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'root',
     'captcha',
+    'Service',
+    'Resume',
+    'About',
+    'Contact',
 ]
 
 MIDDLEWARE = [

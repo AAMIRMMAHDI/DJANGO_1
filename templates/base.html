@@ -51,10 +51,10 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="{% url 'root:home' %}" class="{% if active_page == 'home' %}active{% endif %}">Home</a></li>
-          <li><a href="{% url 'root:about' %}" class="{% if active_page == 'about' %}active{% endif %}">About</a></li>
-          <li><a href="{% url 'root:resume' %}" class="{% if active_page == 'resume' %}active{% endif %}">Resume</a></li>
-          <li><a href="{% url 'root:services' %}" class="{% if active_page == 'services' %}active{% endif %}">Services</a></li>
-          <li><a href="{% url 'root:contact' %}" class="{% if active_page == 'contact' %}active{% endif %}">Contact</a></li>
+          <li><a href="{% url 'About:about' %}" class="{% if active_page == 'about' %}active{% endif %}">About</a></li>
+          <li><a href="{% url 'Resume:resume' %}" class="{% if active_page == 'resume' %}active{% endif %}">Resume</a></li>
+          <li><a href="{% url 'Services:services' %}" class="{% if active_page == 'services' %}active{% endif %}">Projects</a></li>
+          <li><a href="{% url 'Contact:contact' %}" class="{% if active_page == 'contact' %}active{% endif %}">Contact</a></li>
 
           
           {% if user.is_authenticated %}
@@ -87,7 +87,6 @@
 
 
 {% endblock 'content' %}
-
 
 
   <!-- Scroll Top -->

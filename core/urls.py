@@ -23,6 +23,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('' , include('root.urls')),
+    path('' , include('About.urls')),
+    path('' , include('Contact.urls')),
+    path('' , include('Service.urls')),
+    path('', include('Resume.urls')),
     path('captcha/', include('captcha.urls')),
 
 ]

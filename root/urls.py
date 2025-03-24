@@ -1,24 +1,36 @@
 from django.urls import path, include
-from .views import *
+from .views import (
+    home,
+    signup,
+    login_view, logout_view,
+    password_reset_request,
+    password_reset_code,
+    password_change,
+    change, change_profile_icon,
+    save_profile_changes
+)
 
-app_name = 'root' 
+app_name = 'root'
 
 urlpatterns = [
+    # Main pages
     path('', home, name='home'),
-    path('about/', about, name='about'),
-    path('resume/', resume, name='resume'),
-    path('service_details/', service_details, name='service_details'),
-    path('contact/', contact_view, name='contact'),  
+    
+    # Authentication
     path('signup/', signup, name='signup'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    
+    # Password management
     path('password_reset/', password_reset_request, name='password_reset_request'),
     path('password_reset_code/', password_reset_code, name='password_reset_code'),
     path('password_change/', password_change, name='password_change'),
-    path('captcha/', include('captcha.urls')),
+    
+    # Profile management
     path('Change/', change, name='Change'),
     path('change-icon/', change_profile_icon, name='change_profile_icon'),
-    path('save_profile_changes/', save_profile_changes, name='save_profile_changes'),  
-    path('services/', services, name='services'),
-    path('service_details/<int:service_id>/', service_details, name='service_details'),
+    path('save_profile_changes/', save_profile_changes, name='save_profile_changes'),
+    
+    # Third-party apps
+    path('captcha/', include('captcha.urls')),
 ]
