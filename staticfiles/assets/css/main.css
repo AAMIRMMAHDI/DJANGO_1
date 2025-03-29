@@ -78,9 +78,7 @@ a:hover {
 }
 .container {
   position: relative;
-  z-index: 3;
-
-  
+  z-index: 3; 
 }
 h1,
 h2,
@@ -1072,8 +1070,8 @@ section,
 
 .services .service-item .icon {
   margin: 0 auto;
-  width: 64px;
-  height: 64px;
+  width: 320px;
+  height: 200px;
   background: var(--accent-color);
   border-radius: 4px;
   display: flex;
